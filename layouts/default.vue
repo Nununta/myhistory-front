@@ -19,10 +19,6 @@ export default {
 </script>
 
 <style scoped>
-.v-application {
-  background-color: #e9e1e1;
-  color: black;
-}
 li {
   list-style: none;
 }

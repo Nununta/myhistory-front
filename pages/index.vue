@@ -1,12 +1,12 @@
 <template>
-  <v-card>
-    <v-tabs v-model="tabs" centered color="white">
+  <v-card width="80%" class="mx-auto mt-5" v-cloak>
+    <v-tabs v-model="tabs" centered class="mb-5">
       <v-tab> Login </v-tab>
       <v-tab> Register </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="tabs" class="mt-3">
-      <v-tab-item>
-        <v-form class="form" @submit.prevent="login">
+    <v-tabs-items v-model="tabs" class="pt-5 mt-5 mx-auto" style="width: 80%">
+      <v-form class="form" @submit.prevent="login">
+        <v-tab-item>
           <!-- エラー結果表示 -->
           <!-- <div v-if="loginErrors" class="errors">
           <ul v-if="loginErrors.email">
@@ -20,32 +20,28 @@
             </li>
           </ul>
         </div> -->
-          <v-card>
-            <v-text-field
-              label="Email"
-              class="mx-auto pt-0"
-              width="100%"
-              v-model="loginForm.email"
-            ></v-text-field>
 
-            <v-text-field
-              type="password"
-              label="Password"
-              class="mx-auto pt-0"
-              width="100%"
-              v-model="loginForm.password"
-            ></v-text-field>
-            <v-btn class="d-flex mx-auto mb-3 px-10" type="submit">
-              login
-            </v-btn>
-          </v-card>
-        </v-form>
-      </v-tab-item>
+          <v-text-field
+            label="Email"
+            class="mx-auto pt-0"
+            width="100%"
+            v-model="loginForm.email"
+          ></v-text-field>
+
+          <v-text-field
+            type="password"
+            label="Password"
+            class="mx-auto pt-0"
+            width="100%"
+            v-model="loginForm.password"
+          ></v-text-field>
+          <v-btn class="d-flex mx-auto mb-3 px-10" type="submit"> login </v-btn>
+        </v-tab-item>
+      </v-form>
       <v-tab-item>
         <v-form class="form" @submit.prevent="register">
-          <v-card>
-            <!-- エラー結果表示 -->
-            <!-- <div v-if="registerErrors" class="errors">
+          <!-- エラー結果表示 -->
+          <!-- <div v-if="registerErrors" class="errors">
           <ul v-if="registerErrors.name">
             <li v-for="msg in registerErrors.name" :key="msg">
               {{ msg }}
@@ -62,40 +58,40 @@
             </li>
           </ul>
         </div> -->
-            <label for="username">Name</label>
-            <input
-              type="text"
-              class="form__item"
-              id="username"
-              v-model="registerForm.name"
-            />
-            <label for="email">Email</label>
-            <input
-              type="text"
-              class="form__item"
-              id="email"
-              v-model="registerForm.email"
-            />
-            <label for="password">Password</label>
-            <input
-              type="password"
-              class="form__item"
-              id="password"
-              v-model="registerForm.password"
-            />
-            <label for="password-confirmation">Password (confirm)</label>
-            <input
-              type="password"
-              class="form__item"
-              id="password-confirmation"
-              v-model="registerForm.password_confirmation"
-            />
-            <div class="form__button">
-              <button type="submit" class="button button--inverse">
-                register
-              </button>
-            </div>
-          </v-card>
+
+          <v-text-field
+            label="Name"
+            class="mx-auto pt-0"
+            width="100%"
+            v-model="registerForm.name"
+          ></v-text-field>
+
+          <v-text-field
+            label="Email"
+            class="mx-auto pt-0"
+            width="100%"
+            v-model="registerForm.email"
+          ></v-text-field>
+
+          <v-text-field
+            label="Password"
+            type="password"
+            class="mx-auto pt-0"
+            width="100%"
+            v-model="registerForm.password"
+          ></v-text-field>
+
+          <v-text-field
+            label="Password (confirm)"
+            type="password"
+            class="mx-auto pt-0"
+            width="100%"
+            v-model="registerForm.password_confirmation"
+          ></v-text-field>
+
+          <v-btn class="d-flex mx-auto mb-3 px-10" type="submit"
+            >register</v-btn
+          >
         </v-form>
       </v-tab-item>
     </v-tabs-items>
@@ -131,15 +127,15 @@ export default {
       //     this.$router.push("/");
       // }
     },
-    // async register() {
-    //     // authストアのresigterアクションを呼び出す
-    //     await this.$store.dispatch("auth/register", this.registerForm);
+    async register() {
+      // authストアのresigterアクションを呼び出す
+      await this.$store.dispatch("auth/register", this.registerForm);
 
-    //     if (this.apiStatus) {
-    //         // トップページに移動する
-    //         this.$router.push("/");
-    //     }
-    // },
+      if (this.apiStatus) {
+        // トップページに移動する
+        this.$router.push("/");
+      }
+    },
     // clearError() {
     //     this.$store.commit("auth/setLoginErrorMessages", null);
     //     this.$store.commit("auth/setRegisterErrorMessages", null);
@@ -158,7 +154,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 li {
   list-style: none;
 }
