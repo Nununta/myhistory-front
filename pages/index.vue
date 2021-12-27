@@ -1,5 +1,6 @@
 <template>
   <v-card width="80%" class="mx-auto mt-5" v-cloak>
+    <p>ログイン状態: {{ $auth.loggedIn }}</p>
     <v-tabs v-model="tabs" centered class="mb-5">
       <v-tab> Login </v-tab>
       <v-tab> Register </v-tab>
@@ -116,11 +117,23 @@ export default {
       },
     };
   },
+  async asyncData(context) {
+    await context.$axios.$get("/sanctum/csrf-cookie").then(function (response) {
+      // handle success
+      console.log(response);
+    });
+  },
   methods: {
     async login() {
       // authストアのloginアクションを呼び出す
-      console.log("login");
-      // await this.$store.dispatch("auth/login", this.loginForm);
+      try {
+        const response = await this.$auth.loginWith("local", {
+          data: this.loginForm,
+        });
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
 
       // if (this.apiStatus) {
       //     // トップページに移動する
@@ -129,7 +142,7 @@ export default {
     },
     async register() {
       // authストアのresigterアクションを呼び出す
-      await this.$store.dispatch("auth/register", this.registerForm);
+      await this.$store.dispatch("register", this.registerForm);
 
       if (this.apiStatus) {
         // トップページに移動する
