@@ -1,4 +1,4 @@
-import { OK, UNPROCESSABLE_ENTITY, CREATED } from "../plugins/util";
+import { UNPROCESSABLE_ENTITY, CREATED } from "../plugins/util";
 
 const state = () => ({
   user: null,
@@ -36,66 +36,16 @@ const actions = {
 
     if (response.status === CREATED) {
       context.commit("setApiStatus", true);
-      context.commit("setUser", response.data);
+      context.commit("setUser", response);
       return false;
     }
     context.commit("setApiStatus", false);
 
     if (response.status === UNPROCESSABLE_ENTITY) {
-      context.commit("setRegisterErrorMessages", response.data.errors);
+      context.commit("setRegisterErrorMessages", response.errors);
     } else {
       context.commit("error/setCode", response.status, { root: true });
     }
-  },
-
-  //ログイン
-  async login(context, data) {
-    context.commit("setApiStatus", null); //記述なくても動作に問題なかった。
-    const response = await axios.post("/api/login", data);
-
-    if (response.status === OK) {
-      context.commit("setApiStatus", true);
-      context.commit("setUser", response.data);
-      return false;
-    }
-
-    context.commit("setApiStatus", false);
-    if (response.status === UNPROCESSABLE_ENTITY) {
-      context.commit("setLoginErrorMessages", response.data.errors);
-    } else {
-      context.commit("error/setCode", response.status, { root: true });
-    }
-  },
-  //ログアウト
-  async logout(context) {
-    context.commit("setApiStatus", null);
-    const response = await axios.post("/api/logout");
-
-    if (response.status === OK) {
-      context.commit("setApiStatus", true);
-      context.commit("setUser", null);
-      return false;
-    }
-
-    context.commit("setApiStatus", false);
-    context.commit("error/setCode", response.status, { root: true });
-  },
-
-  //ログイン中か判定
-  async currentUser(context) {
-    context.commit("setApiStatus", null);
-    const response = await axios.get("/api/user");
-    //response.dataなければnullに設定
-    const user = response.data || null;
-
-    if (response.status === OK) {
-      context.commit("setApiStatus", true);
-      context.commit("setUser", user);
-      return false;
-    }
-
-    context.commit("setApiStatus", false);
-    context.commit("error/setCode", response.status, { root: true });
   },
 };
 

@@ -120,7 +120,6 @@ export default {
   async asyncData(context) {
     await context.$axios.$get("/sanctum/csrf-cookie").then(function (response) {
       // handle success
-      console.log(response);
     });
   },
   methods: {
@@ -130,7 +129,6 @@ export default {
         const response = await this.$auth.loginWith("local", {
           data: this.loginForm,
         });
-        console.log(response);
       } catch (error) {
         console.log(error);
       }

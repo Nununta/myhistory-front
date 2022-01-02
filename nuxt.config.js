@@ -81,7 +81,7 @@ export default {
       login: "/", // 未ログイン時に認証ルートへアクセスした際のリダイレクトURL
       logout: "/", // ログアウト時のリダイレクトURL
       callback: "/", // Oauth認証等で必要となる コールバックルート
-      home: "/", // ログイン後のリダイレクトURL
+      home: "/task", // ログイン後のリダイレクトURL
     },
     strategies: {
       //strategiesの中身に認証ロジックを書いていく
