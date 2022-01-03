@@ -132,20 +132,14 @@ export default {
       } catch (error) {
         console.log(error);
       }
-
-      // if (this.apiStatus) {
-      //     // トップページに移動する
-      //     this.$router.push("/");
-      // }
     },
     async register() {
       // authストアのresigterアクションを呼び出す
-      await this.$store.dispatch("register", this.registerForm);
-
-      if (this.apiStatus) {
-        // トップページに移動する
-        this.$router.push("/");
-      }
+      await this.$store
+        .dispatch("register", this.registerForm)
+        .then((response) => {
+          location.reload();
+        });
     },
     // clearError() {
     //     this.$store.commit("auth/setLoginErrorMessages", null);

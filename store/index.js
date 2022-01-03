@@ -1,4 +1,5 @@
 import { UNPROCESSABLE_ENTITY, CREATED } from "../plugins/util";
+import axios from "axios";
 
 const state = () => ({
   user: null,
@@ -31,12 +32,10 @@ const actions = {
   //ユーザ登録
   async register(context, data) {
     context.commit("setApiStatus", null);
-    console.log("a");
-    const response = await this.$axios.$post("/api/register", data);
-
+    const response = await axios.post("/api/register", data);
     if (response.status === CREATED) {
       context.commit("setApiStatus", true);
-      context.commit("setUser", response);
+      context.commit("setUser", response.data);
       return false;
     }
     context.commit("setApiStatus", false);
