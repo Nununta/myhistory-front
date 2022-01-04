@@ -9,24 +9,26 @@
       <v-form class="form" @submit.prevent="login">
         <v-tab-item>
           <!-- エラー結果表示 -->
-          <!-- <div v-if="loginErrors" class="errors">
-          <ul v-if="loginErrors.email">
-            <li v-for="msg in loginErrors.email" :key="msg">
-              {{ msg }}
-            </li>
-          </ul>
-          <ul v-if="loginErrors.password">
-            <li v-for="msg in loginErrors.password" :key="msg">
-              {{ msg }}
-            </li>
-          </ul>
-        </div> -->
+          <div v-if="loginErrors" class="red--text">
+            <ul v-if="loginErrors.email" class="pl-0">
+              <li v-for="msg in loginErrors.email" :key="msg">
+                {{ msg }}
+              </li>
+            </ul>
+            <ul v-if="loginErrors.password" class="pl-0">
+              <li v-for="msg in loginErrors.password" :key="msg">
+                {{ msg }}
+              </li>
+            </ul>
+          </div>
 
           <v-text-field
             label="Email"
             class="mx-auto pt-0"
             width="100%"
             v-model="loginForm.email"
+            :rules="emailRules"
+            clearable
           ></v-text-field>
 
           <v-text-field
@@ -35,6 +37,8 @@
             class="mx-auto pt-0"
             width="100%"
             v-model="loginForm.password"
+            :rules="passwordRules"
+            clearable
           ></v-text-field>
           <v-btn class="d-flex mx-auto mb-3 px-10" type="submit"> login </v-btn>
         </v-tab-item>
@@ -42,29 +46,31 @@
       <v-tab-item>
         <v-form class="form" @submit.prevent="register">
           <!-- エラー結果表示 -->
-          <!-- <div v-if="registerErrors" class="errors">
-          <ul v-if="registerErrors.name">
-            <li v-for="msg in registerErrors.name" :key="msg">
-              {{ msg }}
-            </li>
-          </ul>
-          <ul v-if="registerErrors.email">
-            <li v-for="msg in registerErrors.email" :key="msg">
-              {{ msg }}
-            </li>
-          </ul>
-          <ul v-if="registerErrors.password">
-            <li v-for="msg in registerErrors.password" :key="msg">
-              {{ msg }}
-            </li>
-          </ul>
-        </div> -->
+          <div v-if="registerErrors" class="red--text">
+            <ul v-if="registerErrors.name" class="pl-0">
+              <li v-for="msg in registerErrors.name" :key="msg">
+                {{ msg }}
+              </li>
+            </ul>
+            <ul v-if="registerErrors.email" class="pl-0">
+              <li v-for="msg in registerErrors.email" :key="msg">
+                {{ msg }}
+              </li>
+            </ul>
+            <ul v-if="registerErrors.password" class="pl-0">
+              <li v-for="msg in registerErrors.password" :key="msg">
+                {{ msg }}
+              </li>
+            </ul>
+          </div>
 
           <v-text-field
             label="Name"
             class="mx-auto pt-0"
             width="100%"
             v-model="registerForm.name"
+            :rules="nameRules"
+            clearable
           ></v-text-field>
 
           <v-text-field
@@ -72,6 +78,8 @@
             class="mx-auto pt-0"
             width="100%"
             v-model="registerForm.email"
+            :rules="emailRules"
+            clearable
           ></v-text-field>
 
           <v-text-field
@@ -80,6 +88,8 @@
             class="mx-auto pt-0"
             width="100%"
             v-model="registerForm.password"
+            :rules="passwordRules"
+            clearable
           ></v-text-field>
 
           <v-text-field
@@ -88,6 +98,8 @@
             class="mx-auto pt-0"
             width="100%"
             v-model="registerForm.password_confirmation"
+            :rules="passwordRules"
+            clearable
           ></v-text-field>
 
           <v-btn class="d-flex mx-auto mb-3 px-10" type="submit"
@@ -100,7 +112,6 @@
 </template>
 
 <script>
-//import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -115,6 +126,14 @@ export default {
         password: "",
         password_confirmation: "",
       },
+      loginErrors: null,
+      registerErrors: null,
+      emailRules: [(text) => !!text || "メールアドレスを記入してください"],
+      passwordRules: [(text) => !!text || "パスワードを記入してください"],
+      nameRules: [
+        (text) => !!text || "ユーザ名を記入してください",
+        (text) => text.length <= 50 || "最大文字数は50文字です",
+      ],
     };
   },
   async asyncData(context) {
@@ -124,38 +143,34 @@ export default {
   },
   methods: {
     async login() {
-      // authストアのloginアクションを呼び出す
       try {
-        const response = await this.$auth.loginWith("local", {
-          data: this.loginForm,
-        });
+        const response = await this.$store.dispatch("login", this.loginForm);
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
+        this.loginErrors = error.response.data.errors;
       }
     },
     async register() {
       // authストアのresigterアクションを呼び出す
-      await this.$store
-        .dispatch("register", this.registerForm)
-        .then((response) => {
-          location.reload();
-        });
+      try {
+        await this.$store
+          .dispatch("register", this.registerForm)
+          .then((response) => {
+            location.reload();
+          });
+      } catch (error) {
+        console.log(error.response);
+        this.registerErrors = error.response.data.errors;
+      }
     },
-    // clearError() {
-    //     this.$store.commit("auth/setLoginErrorMessages", null);
-    //     this.$store.commit("auth/setRegisterErrorMessages", null);
-    // },
+    clearError() {
+      this.$store.commit("setLoginErrorMessages", null);
+      this.$store.commit("setRegisterErrorMessages", null);
+    },
   },
-  // computed: {
-  //     ...mapState({
-  //         apiStatus: (state) => state.auth.apiStatus,
-  //         loginErrors: (state) => state.auth.loginErrorMessages,
-  //         registerErrors: (state) => state.auth.registerErrorMessages,
-  //     }),
-  // },
-  // created() {
-  //     this.clearError();
-  // },
+  created() {
+    this.clearError();
+  },
 };
 </script>
 

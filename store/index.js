@@ -1,11 +1,8 @@
-import { UNPROCESSABLE_ENTITY, CREATED } from "../plugins/util";
+import { OK, UNPROCESSABLE_ENTITY, CREATED } from "../plugins/util";
 import axios from "axios";
 
 const state = () => ({
   user: null,
-  apiStatus: null,
-  loginErrorMessages: null,
-  registerErrorMessages: null,
 });
 
 const getters = {
@@ -29,10 +26,31 @@ const mutations = {
 };
 
 const actions = {
+  async login(context, data) {
+    const response = await this.$auth.loginWith("local", {
+      data: data,
+    });
+
+    if (response.status === OK) {
+      context.commit("setApiStatus", true);
+      context.commit("setUser", response.data);
+      return false;
+    }
+
+    context.commit("setApiStatus", false);
+
+    if (response.status === UNPROCESSABLE_ENTITY) {
+      context.commit("setRegisterErrorMessages", response.errors);
+    } else {
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+
   //ユーザ登録
   async register(context, data) {
     context.commit("setApiStatus", null);
     const response = await axios.post("/api/register", data);
+
     if (response.status === CREATED) {
       context.commit("setApiStatus", true);
       context.commit("setUser", response.data);
