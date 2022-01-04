@@ -163,13 +163,6 @@ export default {
         this.registerErrors = error.response.data.errors;
       }
     },
-    clearError() {
-      this.$store.commit("setLoginErrorMessages", null);
-      this.$store.commit("setRegisterErrorMessages", null);
-    },
-  },
-  created() {
-    this.clearError();
   },
 };
 </script>

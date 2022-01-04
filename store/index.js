@@ -14,15 +14,6 @@ const mutations = {
   setUser(state, user) {
     state.user = user;
   },
-  setApiStatus(state, status) {
-    state.apiStatus = status;
-  },
-  setLoginErrorMessages(state, messages) {
-    state.loginErrorMessages = messages;
-  },
-  setRegisterErrorMessages(state, messages) {
-    state.registerErrorMessages = messages;
-  },
 };
 
 const actions = {
@@ -32,17 +23,7 @@ const actions = {
     });
 
     if (response.status === OK) {
-      context.commit("setApiStatus", true);
       context.commit("setUser", response.data);
-      return false;
-    }
-
-    context.commit("setApiStatus", false);
-
-    if (response.status === UNPROCESSABLE_ENTITY) {
-      context.commit("setRegisterErrorMessages", response.errors);
-    } else {
-      context.commit("error/setCode", response.status, { root: true });
     }
   },
 
@@ -52,16 +33,7 @@ const actions = {
     const response = await axios.post("/api/register", data);
 
     if (response.status === CREATED) {
-      context.commit("setApiStatus", true);
       context.commit("setUser", response.data);
-      return false;
-    }
-    context.commit("setApiStatus", false);
-
-    if (response.status === UNPROCESSABLE_ENTITY) {
-      context.commit("setRegisterErrorMessages", response.errors);
-    } else {
-      context.commit("error/setCode", response.status, { root: true });
     }
   },
 };
