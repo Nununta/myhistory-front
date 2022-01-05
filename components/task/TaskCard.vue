@@ -1,8 +1,5 @@
 <template>
-  <router-link
-    class="routerLink"
-    :to="{ name: 'taskDetail', params: { id: taskCard.id } }"
-  >
+  <nuxt-link :to="`/tasks?id=${taskCard.id}`" class="routerLink">
     <v-card
       class="mx-3 p-2 pb-4 my-2"
       width="250px"
@@ -32,7 +29,7 @@
         <div v-else><br /></div>
       </div>
     </v-card>
-  </router-link>
+  </nuxt-link>
 </template>
 
 <script>
