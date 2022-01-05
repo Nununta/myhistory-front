@@ -6,8 +6,18 @@
     <h1 v-else>
       {{ otherError }}
     </h1>
-    <NuxtLink to="/" v-if="$auth.loggedIn">Topページへ</NuxtLink>
-    <NuxtLink to="/" v-else>ログインページへ</NuxtLink>
+
+    <!-- <NuxtLink to="/" v-if="error.statusCode === 404">Topページへ</NuxtLink> -->
+    <a href="/">Topページへ</a>
+    <!-- <div v-if="error.statusCode === 404">
+      <NuxtLink to="/" v-if="$auth.loggedIn">Topページへ</NuxtLink>
+      <NuxtLink to="/" v-else>ログインページへ</NuxtLink>
+    </div>
+    <div v-else> -->
+    <!-- 500エラー時にNuxtLinkだとtopページに遷移できない為aタグ配置 -->
+    <!-- <a href="/" v-if="$auth.loggedIn">Topページへ</a>
+      <a href="/" v-else>ログインページへ</a>
+    </div> -->
   </v-app>
 </template>
 

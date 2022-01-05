@@ -17,7 +17,7 @@
             listAdd
           </v-btn>
         </template>
-        <v-card class="p-5">
+        <v-card class="pa-5">
           <TaskListAdd @dialogClose="dialogCloseList" />
         </v-card>
       </v-dialog>
@@ -37,7 +37,7 @@
                 cardAdd
               </v-btn>
             </template>
-            <v-card class="p-5">
+            <v-card class="pa-5">
               <TaskCardAdd
                 :listNames="listNames"
                 @dialogClose="dialogCloseCard"
