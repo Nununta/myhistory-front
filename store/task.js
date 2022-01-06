@@ -1,5 +1,4 @@
 import { OK, UNPROCESSABLE_ENTITY, CREATED } from "../plugins/util";
-import axios from "axios";
 
 const state = () => ({
   apiStatus: null,
@@ -28,7 +27,7 @@ const mutations = {
 const actions = {
   //タスクリスト取得
   async taskListsGet(context) {
-    const response = await axios.get("/api/task-list");
+    const response = await this.$axios.get("/api/task-list");
 
     if (response.status === CREATED) {
       const taskList = response.data.taskList || null;
@@ -43,9 +42,9 @@ const actions = {
   },
   //タスクカード取得
   async taskCardsGet(context) {
-    const response = await axios.get("/api/task-card/all");
+    const response = await this.$axios.get("/api/task-card/all");
     const taskCards = response.data.taskCard || null;
-
+    console.log(taskCards);
     context.commit("setTaskCards", taskCards);
   },
   //404チェック
@@ -68,10 +67,10 @@ const actions = {
 
   //タスクリスト新規作成
   async taskListsCreate(context, data) {
-    const responseStatus = await axios.post("/api/task-list", data);
+    const responseStatus = await this.$axios.post("/api/task-list", data);
 
     if (responseStatus.status === CREATED) {
-      const response = await axios.get("/api/task-list");
+      const response = await this.$axios.get("/api/task-list");
       const taskList = response.data.taskList || null;
       context.commit("setTaskLists", taskList);
       context.commit("setApiStatus", true);
@@ -90,11 +89,11 @@ const actions = {
 
   //タスクカード新規作成
   async taskCardCreate(context, data) {
-    const responseStatus = await axios.post("/api/task-card", data);
+    const responseStatus = await this.$axios.post("/api/task-card", data);
 
     if (responseStatus.status === CREATED) {
-      const response = await axios.get("/api/task-card/all");
-      const taskCards = response.data.taskCard || null;
+      const response = await this.$axios.get("/api/task-card/all");
+      const taskCards = response.data.taskCards || null;
 
       context.commit("setTaskCards", taskCards);
       context.commit("setApiStatus", true);
@@ -113,10 +112,13 @@ const actions = {
 
   //タスクカード更新
   async taskCardUpdate(context, data) {
-    const responseStatus = await axios.patch("/api/task-card/" + data.id, data);
+    const responseStatus = await this.$axios.patch(
+      "/api/task-card/" + data.id,
+      data
+    );
 
     if (responseStatus.status === CREATED) {
-      const response = await axios.get("/api/task-list");
+      const response = await this.$axios.get("/api/task-list");
       const taskList = response.data.taskList || null;
       context.commit("setTaskLists", taskList);
       context.commit("setApiStatus", true);

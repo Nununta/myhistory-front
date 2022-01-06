@@ -48,6 +48,7 @@ export default {
         await this.$store.dispatch("learn/learnListsCreate", this.learnList);
         this.learnList.name = "";
         this.$refs.card_form.resetValidation();
+        this.$emit("dialogClose");
       }
     },
     clear() {

@@ -3,7 +3,7 @@
     <h1>TaskList</h1>
 
     <v-row class="justify-center my-3">
-      <v-dialog width="500">
+      <v-dialog width="500" v-model="dialogList">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             outlined
@@ -18,13 +18,13 @@
           </v-btn>
         </template>
         <v-card class="pa-5">
-          <TaskListAdd />
+          <TaskListAdd @dialogClose="dialogCloseList" />
         </v-card>
       </v-dialog>
 
       <template>
         <div class="text-center">
-          <v-dialog width="500">
+          <v-dialog width="500" v-model="dialogCard">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 outlined
@@ -38,7 +38,10 @@
               </v-btn>
             </template>
             <v-card class="pa-5">
-              <TaskCardAdd :listNames="listNames" />
+              <TaskCardAdd
+                :listNames="listNames"
+                @dialogClose="dialogCloseCard"
+              />
             </v-card>
           </v-dialog>
         </div>
@@ -72,8 +75,8 @@ export default {
     return {
       taskLists: [],
       listNames: [],
-      // dialogCard: false,
-      // dialogList: false,
+      dialogCard: false,
+      dialogList: false,
     };
   },
   methods: {
@@ -87,12 +90,12 @@ export default {
       });
       this.listNames = listNames;
     },
-    // dialogCloseList() {
-    //   this.dialogList = false;
-    // },
-    // dialogCloseCard() {
-    //   this.dialogCard = false;
-    // },
+    dialogCloseList() {
+      this.dialogList = false;
+    },
+    dialogCloseCard() {
+      this.dialogCard = false;
+    },
   },
   computed: {
     ...mapState({

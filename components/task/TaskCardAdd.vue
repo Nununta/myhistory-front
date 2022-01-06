@@ -143,6 +143,7 @@ export default {
         this.text = "";
 
         this.$refs.card_form.resetValidation();
+        this.$emit("dialogClose");
       }
     },
     clear() {

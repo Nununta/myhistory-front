@@ -48,6 +48,7 @@ export default {
         await this.$store.dispatch("task/taskListsCreate", this.taskList);
         this.taskList.name = "";
         this.$refs.card_form.resetValidation();
+        this.$emit("dialogClose");
       }
     },
     clear() {

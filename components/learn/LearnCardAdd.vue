@@ -117,6 +117,7 @@ export default {
         this.cardForm.status = "";
         this.cardForm.list_name = "";
         this.$refs.card_form.resetValidation();
+        this.$emit("dialogClose");
       }
     },
     clear() {

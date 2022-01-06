@@ -92,6 +92,7 @@ const actions = {
 
     if (responseStatus.status === CREATED) {
       const response = await this.$axios.get("/api/learn-card/all");
+      console.log(response);
       const learnCards = response.data || null;
       context.commit("setLearnCards", learnCards);
       context.commit("setApiStatus", true);

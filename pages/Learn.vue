@@ -3,7 +3,7 @@
     <h1>LearnList</h1>
 
     <v-row class="justify-center my-3">
-      <v-dialog width="500">
+      <v-dialog width="500" v-model="dialogList">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             outlined
@@ -18,13 +18,13 @@
           </v-btn>
         </template>
         <v-card class="pa-5">
-          <LearnListAdd />
+          <LearnListAdd @dialogClose="dialogCloseList" />
         </v-card>
       </v-dialog>
 
       <template>
         <div class="text-center">
-          <v-dialog width="500">
+          <v-dialog width="500" v-model="dialogCard">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 outlined
@@ -38,7 +38,10 @@
               </v-btn>
             </template>
             <v-card class="pa-5">
-              <LearnCardAdd :listNames="listNames" />
+              <LearnCardAdd
+                :listNames="listNames"
+                @dialogClose="dialogCloseList"
+              />
             </v-card>
           </v-dialog>
         </div>
@@ -72,8 +75,8 @@ export default {
       learnLists: [],
       listNames: [],
       tweet: "api",
-      //   dialogCard: false,
-      //   dialogList: false,
+      dialogCard: false,
+      dialogList: false,
     };
   },
   methods: {
@@ -90,18 +93,17 @@ export default {
     // async statusReset() {
     //   await this.$store.dispatch("learn/errorMessageReset");
     // },
-    // dialogCloseList() {
-    //   this.dialogList = false;
-    // },
-    // dialogCloseCard() {
-    //   this.dialogCard = false;
-    // },
+    dialogCloseList() {
+      this.dialogList = false;
+    },
+    dialogCloseCard() {
+      this.dialogCard = false;
+    },
   },
   computed: {
     ...mapState({
       stateLearnLists: (state) => state.learn.learnLists,
       stateLearnCards: (state) => state.learn.learnCards,
-      //   errorMessages: (state) => state.learn.errorMessages,
     }),
   },
   watch: {
