@@ -47,7 +47,6 @@
           label="TaskLimit"
           v-bind="attrs"
           v-on="on"
-          clearable
           :rules="limitRules"
           @focusin="startEdit"
           @focusout="finishEdit"

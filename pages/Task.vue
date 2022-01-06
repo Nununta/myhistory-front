@@ -114,6 +114,12 @@ export default {
       },
       deep: true,
     },
+    stateTaskCards: {
+      handler() {
+        this.taskListsGet();
+      },
+      deep: true,
+    },
   },
 };
 </script>

@@ -3,7 +3,6 @@
     <v-text-field
       v-model="cardForm.name"
       label="LearnTitle"
-      clearable
       @focusin="startEdit"
       @focusout="finishEdit"
       class="mx-auto pt-0"
@@ -27,7 +26,6 @@
       v-model="cardForm.content"
       label="LearnContent"
       :rules="contentRules"
-      clearable
       @focusin="startEdit"
       @focusout="finishEdit"
       class="mx-auto"
@@ -44,41 +42,22 @@
       class="mx-auto"
       width="100%"
     ></v-select>
-    <!-- エラー結果表示 -->
-    <div v-if="cardAddErrors">
-      <ul v-if="cardAddErrors.name">
-        <li v-for="msg in cardAddErrors.name" :key="msg" class="red--text">
-          {{ msg }}
-        </li>
-      </ul>
-      <ul v-if="cardAddErrors.list_name">
-        <li v-for="msg in cardAddErrors.list_name" :key="msg" class="red--text">
-          {{ msg }}
-        </li>
-      </ul>
-      <ul v-if="cardAddErrors.content">
-        <li v-for="msg in cardAddErrors.content" :key="msg" class="red--text">
-          {{ msg }}
-        </li>
-      </ul>
-      <ul v-if="cardAddErrors.status">
-        <li v-for="msg in cardAddErrors.status" :key="msg" class="red--text">
-          {{ msg }}
-        </li>
-      </ul>
+    <div class="d-flex justify-center">
+      <v-btn
+        class="me-5 mb-3 px-10"
+        @click="addCard"
+        :class="[
+          isEditing || contentExists
+            ? 'cyan red--text text--lighten-5'
+            : 'indigo darken-4 blue--text text--lighten-5',
+        ]"
+      >
+        LearnAdd
+      </v-btn>
+      <v-btn class="mb-3 px-10 deep-orange darken-1 white--text" @click="clear">
+        Clear
+      </v-btn>
     </div>
-
-    <v-btn
-      class="d-flex mx-auto mb-3 px-10"
-      @click="addCard"
-      :class="[
-        isEditing || contentExists
-          ? 'cyan red--text text--lighten-5'
-          : 'indigo darken-4 blue--text text--lighten-5',
-      ]"
-    >
-      LearnAdd
-    </v-btn>
   </v-form>
 </template>
 
@@ -139,6 +118,13 @@ export default {
         this.cardForm.list_name = "";
         this.$refs.card_form.resetValidation();
       }
+    },
+    clear() {
+      this.cardForm.name = "";
+      this.cardForm.content = "";
+      this.cardForm.status = "";
+      this.cardForm.list_name = "";
+      this.$refs.card_form.resetValidation();
     },
     startEdit() {
       this.isEditing = true;

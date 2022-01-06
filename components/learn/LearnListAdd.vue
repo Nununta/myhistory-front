@@ -3,29 +3,27 @@
     <v-text-field
       v-model="learnList.name"
       label="LearnList"
-      clearable
       @focusin="startEdit"
       @focusout="finishEdit"
       counter
       :rules="nameRules"
     ></v-text-field>
-    <!-- エラー結果表示 -->
-    <ul v-if="listAddErrors">
-      <li v-for="msg in listAddErrors.name" :key="msg" class="red--text">
-        {{ msg }}
-      </li>
-    </ul>
-    <v-btn
-      class="d-flex mx-auto"
-      @click="addList"
-      :class="[
-        isEditing || contentExists
-          ? 'cyan red--text text--lighten-5'
-          : 'indigo darken-4 blue--text text--lighten-5',
-      ]"
-    >
-      submit
-    </v-btn>
+    <div class="d-flex justify-center">
+      <v-btn
+        class="me-5 mb-3 px-10"
+        @click="addList"
+        :class="[
+          isEditing || contentExists
+            ? 'cyan red--text text--lighten-5'
+            : 'indigo darken-4 blue--text text--lighten-5',
+        ]"
+      >
+        submit
+      </v-btn>
+      <v-btn class="mb-3 px-10 deep-orange darken-1 white--text" @click="clear">
+        Clear
+      </v-btn>
+    </div>
   </v-form>
 </template>
 
@@ -51,6 +49,10 @@ export default {
         this.learnList.name = "";
         this.$refs.card_form.resetValidation();
       }
+    },
+    clear() {
+      this.learnList.name = "";
+      this.$refs.card_form.resetValidation();
     },
     startEdit() {
       this.isEditing = true;

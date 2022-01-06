@@ -55,7 +55,7 @@ export default {
     async removeCard() {
       if (confirm("タスクを削除してもよろしいでしょうか?")) {
         await this.$axios
-          .$delete("/api/task-card/" + this.taskCard.id)
+          .delete("/api/task-card/" + this.taskCard.id)
           .then((response) => {
             this.$store.dispatch("task/taskCardsGet");
           })
