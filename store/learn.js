@@ -2,7 +2,6 @@ import { OK, UNPROCESSABLE_ENTITY, CREATED } from "../plugins/util";
 
 const state = () => ({
   apiStatus: null,
-  errorMessages: null,
   learnLists: [],
   learnCards: [],
 });
@@ -15,9 +14,6 @@ const mutations = {
   },
   setApiStatus(state, status) {
     state.apiStatus = status;
-  },
-  seterrorMessages(state, messages) {
-    state.errorMessages = messages;
   },
   setLearnCards(state, learnCards) {
     state.learnCards = learnCards;
@@ -58,12 +54,6 @@ const actions = {
     });
   },
 
-  ///エラーメッセージリセット
-  async errorMessageReset(context) {
-    context.commit("seterrorMessages", null);
-    context.commit("setApiStatus", null);
-  },
-
   //学習リスト新規作成
   async learnListsCreate(context, data) {
     const responseStatus = await this.$axios.post("/api/learn-list", data);
@@ -77,13 +67,10 @@ const actions = {
     }
 
     context.commit("setApiStatus", false);
-    if (responseStatus.status === UNPROCESSABLE_ENTITY) {
-      context.commit("seterrorMessages", responseStatus.data.errors);
-    } else {
-      context.commit("error/setCode", responseStatus.status, {
-        root: true,
-      });
-    }
+
+    context.commit("error/setCode", responseStatus.status, {
+      root: true,
+    });
   },
 
   //学習カード新規作成
@@ -100,13 +87,10 @@ const actions = {
     }
 
     context.commit("setApiStatus", false);
-    if (responseStatus.status === UNPROCESSABLE_ENTITY) {
-      context.commit("seterrorMessages", responseStatus.data.errors);
-    } else {
-      context.commit("error/setCode", responseStatus.status, {
-        root: true,
-      });
-    }
+
+    context.commit("error/setCode", responseStatus.status, {
+      root: true,
+    });
   },
 
   //学習カード更新
@@ -124,13 +108,10 @@ const actions = {
       return false;
     }
     context.commit("setApiStatus", false);
-    if (responseStatus.status === UNPROCESSABLE_ENTITY) {
-      context.commit("seterrorMessages", responseStatus.data.errors);
-    } else {
-      context.commit("error/setCode", responseStatus.status, {
-        root: true,
-      });
-    }
+
+    context.commit("error/setCode", responseStatus.status, {
+      root: true,
+    });
   },
 };
 

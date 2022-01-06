@@ -90,9 +90,6 @@ export default {
       });
       this.listNames = listNames;
     },
-    // async statusReset() {
-    //   await this.$store.dispatch("learn/errorMessageReset");
-    // },
     dialogCloseList() {
       this.dialogList = false;
     },

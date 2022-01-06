@@ -2,7 +2,6 @@ import { OK, UNPROCESSABLE_ENTITY, CREATED } from "../plugins/util";
 
 const state = () => ({
   apiStatus: null,
-  errorMessages: null,
   taskLists: [],
   taskCards: [],
 });
@@ -18,9 +17,6 @@ const mutations = {
   },
   setApiStatus(state, status) {
     state.apiStatus = status;
-  },
-  seterrorMessages(state, messages) {
-    state.errorMessages = messages;
   },
 };
 
@@ -59,12 +55,6 @@ const actions = {
     });
   },
 
-  ///エラーメッセージリセット
-  async errorMessageReset(context) {
-    context.commit("seterrorMessages", null);
-    context.commit("setApiStatus", null);
-  },
-
   //タスクリスト新規作成
   async taskListsCreate(context, data) {
     const responseStatus = await this.$axios.post("/api/task-list", data);
@@ -78,13 +68,10 @@ const actions = {
     }
 
     context.commit("setApiStatus", false);
-    if (responseStatus.status === UNPROCESSABLE_ENTITY) {
-      context.commit("seterrorMessages", responseStatus.data.errors);
-    } else {
-      context.commit("error/setCode", responseStatus.status, {
-        root: true,
-      });
-    }
+
+    context.commit("error/setCode", responseStatus.status, {
+      root: true,
+    });
   },
 
   //タスクカード新規作成
@@ -101,13 +88,10 @@ const actions = {
     }
 
     context.commit("setApiStatus", false);
-    if (responseStatus.status === UNPROCESSABLE_ENTITY) {
-      context.commit("seterrorMessages", responseStatus.data.errors);
-    } else {
-      context.commit("error/setCode", responseStatus.status, {
-        root: true,
-      });
-    }
+
+    context.commit("error/setCode", responseStatus.status, {
+      root: true,
+    });
   },
 
   //タスクカード更新
@@ -126,13 +110,10 @@ const actions = {
     }
 
     context.commit("setApiStatus", false);
-    if (responseStatus.status === UNPROCESSABLE_ENTITY) {
-      context.commit("seterrorMessages", responseStatus.data.errors);
-    } else {
-      context.commit("error/setCode", responseStatus.status, {
-        root: true,
-      });
-    }
+
+    context.commit("error/setCode", responseStatus.status, {
+      root: true,
+    });
   },
 };
 

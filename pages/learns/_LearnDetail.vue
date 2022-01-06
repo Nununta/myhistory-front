@@ -137,9 +137,6 @@ export default {
     finishEdit() {
       this.isEditing = false;
     },
-    async statusReset() {
-      await this.$store.dispatch("learn/errorMessageReset");
-    },
   },
   computed: {
     contentExists() {
