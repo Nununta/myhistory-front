@@ -3,7 +3,7 @@
     <h1>TaskList</h1>
 
     <v-row class="justify-center my-3">
-      <v-dialog v-model="dialogList" width="500">
+      <v-dialog width="500">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             outlined
@@ -18,13 +18,13 @@
           </v-btn>
         </template>
         <v-card class="pa-5">
-          <TaskListAdd @dialogClose="dialogCloseList" />
+          <TaskListAdd />
         </v-card>
       </v-dialog>
 
       <template>
         <div class="text-center">
-          <v-dialog v-model="dialogCard" width="500">
+          <v-dialog width="500">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 outlined
@@ -38,10 +38,7 @@
               </v-btn>
             </template>
             <v-card class="pa-5">
-              <TaskCardAdd
-                :listNames="listNames"
-                @dialogClose="dialogCloseCard"
-              />
+              <TaskCardAdd :listNames="listNames" />
             </v-card>
           </v-dialog>
         </div>
@@ -75,21 +72,10 @@ export default {
     return {
       taskLists: [],
       listNames: [],
-      dialogCard: false,
-      dialogList: false,
+      // dialogCard: false,
+      // dialogList: false,
     };
   },
-  //   async asyncData(context) {
-  //     await context.$axios.$get("/api/task-list").then(function (response) {
-  //       console.log(response.taskList);
-  //       // this.taskLists = response.taskList;
-  //       // const listNames = [];
-  //       // this.taskLists.forEach(function (taskList) {
-  //       //   listNames.push(taskList.name);
-  //       // });
-  //       // this.listNames = listNames;
-  //     });
-  //   },
   methods: {
     async taskListsGet() {
       const response = await this.$axios.$get("/api/task-list");
@@ -101,21 +87,17 @@ export default {
       });
       this.listNames = listNames;
     },
-    async statusReset() {
-      await this.$store.dispatch("task/errorMessageReset");
-    },
-    dialogCloseList() {
-      this.dialogList = false;
-    },
-    dialogCloseCard() {
-      this.dialogCard = false;
-    },
+    // dialogCloseList() {
+    //   this.dialogList = false;
+    // },
+    // dialogCloseCard() {
+    //   this.dialogCard = false;
+    // },
   },
   computed: {
     ...mapState({
       stateTaskLists: (state) => state.task.taskLists,
       stateTaskCards: (state) => state.task.taskCards,
-      errorMessages: (state) => state.task.errorMessages,
     }),
   },
   watch: {
@@ -131,23 +113,6 @@ export default {
         this.taskListsGet();
       },
       deep: true,
-    },
-
-    dialogList() {
-      if (!this.dialogList) {
-        //ダイアログが閉じた時
-        if (this.errorMessages) {
-          this.statusReset();
-        }
-      }
-    },
-    dialogCard() {
-      if (!this.dialogCard) {
-        //ダイアログが閉じた時の処理
-        if (this.errorMessages) {
-          this.statusReset();
-        }
-      }
     },
   },
 };

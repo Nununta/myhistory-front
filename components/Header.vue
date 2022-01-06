@@ -13,10 +13,10 @@
         <v-tab to="/"
           ><v-icon class="me-2">mdi-electron-framework</v-icon> TASK
         </v-tab>
-        <!-- <v-tab to="/learn" v-if="isLogin"
-                    ><v-icon class="me-2">mdi-book-open-page-variant</v-icon>
-                    LEARN
-                </v-tab> -->
+        <v-tab to="/learn"
+          ><v-icon class="me-2">mdi-book-open-page-variant</v-icon>
+          LEARN
+        </v-tab>
         <v-tab @click="$auth.logout()"> Logout </v-tab>
       </v-tabs>
     </v-app-bar>
