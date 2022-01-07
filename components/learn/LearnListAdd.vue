@@ -8,6 +8,12 @@
       counter
       :rules="nameRules"
     ></v-text-field>
+    <!-- エラー表示 -->
+    <ul v-if="Errormessages" class="pl-0 red--text">
+      <li v-for="msg in Errormessages.name" :key="msg">
+        {{ msg }}
+      </li>
+    </ul>
     <div class="d-flex justify-center">
       <v-btn
         class="me-5 mb-3 px-10"
@@ -40,19 +46,27 @@ export default {
         (text) => !!text || "リスト名を記入してください",
         (text) => text.length <= 50 || "最大文字数は50文字です",
       ],
+      Errormessages: false,
     };
   },
   methods: {
     async addList() {
-      if (this.$refs.card_form.validate()) {
-        await this.$store.dispatch("learn/learnListsCreate", this.learnList);
-        this.learnList.name = "";
-        this.$refs.card_form.resetValidation();
-        this.$emit("dialogClose");
+      try {
+        if (this.$refs.card_form.validate()) {
+          await this.$store.dispatch("learn/learnListsCreate", this.learnList);
+          this.learnList.name = "";
+          this.$refs.card_form.resetValidation();
+          this.Errormessages = false;
+          this.$emit("dialogClose");
+        }
+      } catch (error) {
+        console.log(error.response.data.errors);
+        this.Errormessages = error.response.data.errors;
       }
     },
     clear() {
       this.learnList.name = "";
+      this.Errormessages = false;
       this.$refs.card_form.resetValidation();
     },
     startEdit() {
