@@ -1,6 +1,6 @@
 <template>
   <v-card width="80%" class="mx-auto mt-5" v-cloak>
-    <p>ログイン状態: {{ $auth.loggedIn }}</p>
+    <!-- <p>ログイン状態: {{ $auth.loggedIn }}</p> -->
     <v-tabs v-model="tabs" centered class="mb-5">
       <v-tab> Login </v-tab>
       <v-tab> Register </v-tab>
@@ -24,7 +24,7 @@
 
           <v-text-field
             label="Email"
-            class="mx-auto pt-0"
+            class="mx-auto pt-0 pb-3"
             width="100%"
             v-model="loginForm.email"
             :rules="emailRules"
@@ -66,7 +66,7 @@
 
           <v-text-field
             label="Name"
-            class="mx-auto pt-0"
+            class="mx-auto pt-0 pb-3"
             width="100%"
             v-model="registerForm.name"
             :rules="nameRules"
@@ -75,7 +75,7 @@
 
           <v-text-field
             label="Email"
-            class="mx-auto pt-0"
+            class="mx-auto pt-0 pb-3"
             width="100%"
             v-model="registerForm.email"
             :rules="emailRules"
@@ -85,7 +85,7 @@
           <v-text-field
             label="Password"
             type="password"
-            class="mx-auto pt-0"
+            class="mx-auto pt-0 pb-3"
             width="100%"
             v-model="registerForm.password"
             :rules="passwordRules"

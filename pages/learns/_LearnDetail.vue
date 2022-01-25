@@ -124,7 +124,6 @@ export default {
       if (this.$refs.card_form.validate()) {
         await this.$store.dispatch("learn/learnCardUpdate", this.editForm);
         if (this.apiStatus) {
-          this.statusReset();
           this.$router.push("/learn");
         }
       } else {

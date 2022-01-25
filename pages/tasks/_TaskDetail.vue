@@ -150,7 +150,6 @@ export default {
       if (this.$refs.card_form.validate()) {
         await this.$store.dispatch("task/taskCardUpdate", this.editForm);
         if (this.apiStatus) {
-          this.statusReset();
           this.$router.push("/");
         }
       }
