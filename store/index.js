@@ -18,7 +18,7 @@ const mutations = {
 
 const actions = {
   async login(context, data) {
-    const response = await this.$auth.loginWith("local", {
+    const response = await this.$auth.loginWith("User", {
       data: data,
     });
 

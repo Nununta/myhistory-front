@@ -32,7 +32,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     "@nuxtjs/axios",
-    "@nuxtjs/auth", // 追記
+    "@nuxtjs/auth-next", // 追記
   ],
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
@@ -80,16 +80,13 @@ export default {
     redirect: {
       login: "/", // 未ログイン時に認証ルートへアクセスした際のリダイレクトURL
       logout: "/", // ログアウト時のリダイレクトURL
-      callback: "/", // Oauth認証等で必要となる コールバックルート
+      callback: "/login", // Oauth認証等で必要となる コールバックルート
       home: "/task", // ログイン後のリダイレクトURL
     },
     strategies: {
       //strategiesの中身に認証ロジックを書いていく
       local: {
-        token: {
-          // type: 'Bearer',
-          property: "access_token",
-        }, // 自動的にauthorizationヘッダーにbeareという文字を追加
+        tokenType: "",
         user: {
           //追加
           property: false,
@@ -98,13 +95,16 @@ export default {
           login: {
             url: "/api/auth/login", //ログインするときにアクセスするurl
             method: "post",
-            propertyName: false, //サーバーから帰ってくるトークンの名前
+            propertyName: "access_token", //サーバーから帰ってくるトークンの名前
+          },
+          refresh: {
+            url: "/api/refresh",
+            method: "post",
+            propertyName: "access_token",
           },
           user: { url: "/api/user", method: "get", propertyName: false },
-          logout: { url: "/api/auth/logout", method: "post" },
+          logout: { url: "/api/logout", method: "post" },
         },
-        tokenRequired: false,
-        tokenType: false,
       },
     },
     localStorage: false,

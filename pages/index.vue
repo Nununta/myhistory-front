@@ -1,8 +1,8 @@
 <template>
   <v-card width="80%" class="mx-auto mt-5" v-cloak>
-    <!-- <p>ログイン状態: {{ $auth.loggedIn }}</p> -->
+    <p>ログイン状態: {{ $auth.loggedIn }}</p>
     <v-tabs v-model="tabs" centered class="mb-5">
-      <v-tab> Login </v-tab>
+      <v-tab> Login</v-tab>
       <v-tab> Register </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tabs" class="pt-5 mt-5 mx-auto" style="width: 80%">
@@ -113,8 +113,15 @@
 
 <script>
 export default {
+  middleware: ["auth"],
+  head() {
+    return {
+      title: "ログイン",
+    };
+  },
   data() {
     return {
+      processing: false,
       tabs: null,
       loginForm: {
         email: "",
@@ -143,8 +150,13 @@ export default {
   },
   methods: {
     async login() {
+      this.processing = true;
       try {
-        const response = await this.$store.dispatch("login", this.loginForm);
+        await this.$auth
+          .loginWith("local", { data: this.loginForm })
+          .then(() => {
+            this.processing = false;
+          });
       } catch (error) {
         console.log(error.response);
         this.loginErrors = error.response.data.errors;
